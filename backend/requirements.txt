@@ -1,0 +1,14 @@
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+anthropic==0.42.0
+python-dotenv==1.0.1
+pydantic==2.10.0
+pydantic-settings==2.7.0
+httpx==0.28.0
+supabase==2.11.0
+pgvector==0.3.6
+asyncpg==0.30.0
+sqlalchemy[asyncio]==2.0.36
+python-multipart==0.0.18
+pillow==11.1.0
+pytesseract==0.3.13
