@@ -17,11 +17,14 @@
 
 ```
 gutbrain/
-├── CLAUDE.md              ← Этот файл
+├── CLAUDE.md              ← Этот файл (auto-read)
+├── .claude/
+│   ├── commands/setup.md  ← Команда /project:setup
+│   └── settings.json      ← Настройки проекта (скиллы)
 ├── app/                   ← React Native (Expo) — iPhone приложение
 ├── backend/               ← FastAPI сервер
 ├── docs/                  ← Документация и спеки
-├── research/              ← Интервью и анализ
+├── research/              ← Интервью, анализ, методология
 └── scripts/               ← Утилиты и автоматизация
 ```
 
@@ -31,45 +34,82 @@ gutbrain/
 
 ```
 docs/GUTBRAIN_PRODUCT_SPEC.md       ← Полный продуктовый спек + план на 14 недель
+docs/PROJECT_HISTORY.md             ← Вся история разработки и данные исследований
 research/analysis/BIO_INTERVIEW_ANALYSIS.md  ← Анализ интервью с пользователем
 ```
 
 ---
 
-## Команда "setup"
+## Команда "setup" / "настрой" / "разверни"
 
-Если пользователь пишет **"setup"**, **"настрой"**, **"установи всё"** или **"разверни проект"**:
+Если пользователь пишет **"setup"**, **"настрой"**, **"установи всё"**, **"разверни проект"** или **"подготовь к работе"**:
 
-1. Запусти скрипт: `bash scripts/setup.sh`
-2. Если скрипт не найден — выполни шаги вручную (см. ниже)
-3. После установки — покажи чек-лист что готово
+**Выполни ВСЕ шаги последовательно:**
 
-### Ручная установка (если скрипт не работает):
+### 1. Системные зависимости
 
 ```bash
-# 1. Проверить Xcode Command Line Tools
-xcode-select --install 2>/dev/null || true
-
-# 2. Проверить/установить Homebrew
-command -v brew || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# 3. Проверить/установить Node.js 18+
-node --version || brew install node
-
-# 4. Проверить/установить Python 3.11+
-python3 --version || brew install python@3.12
-
-# 5. Создать React Native приложение (Expo)
-cd app && npx create-expo-app@latest . --template blank-typescript
-
-# 6. Установить зависимости приложения
-cd app && npm install
-
-# 7. Создать Python окружение для бэкенда
-cd backend && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
-
-# 8. Проверить что Expo Go установлен на iPhone (напомнить пользователю)
+bash scripts/setup.sh
 ```
+
+Если скрипт не найден или не работает — установи вручную:
+1. `xcode-select --install` — Xcode Command Line Tools
+2. Homebrew: `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+3. `brew install node` — Node.js 18+
+4. `brew install python@3.12` — Python 3.11+
+
+### 2. Expo приложение
+
+```bash
+# Если app/ пустая — создай проект:
+npx --yes create-expo-app@latest app --template blank-typescript
+# Если app/package.json есть — установи зависимости:
+cd app && npm install
+```
+
+### 3. Python бэкенд
+
+```bash
+cd backend && python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && deactivate
+```
+
+### 4. Конфиг (.env)
+
+Если `backend/.env` не существует — создай шаблон с плейсхолдерами.
+
+### 5. Git
+
+Проверь `git config user.name` и `git config user.email`. Если пусто — попроси ввести.
+
+### 6. Скиллы Claude Code
+
+Проверь доступ к скиллу `pdf`. Если не доступен, скажи пользователю:
+> Для работы с PDF и документами напиши: `/install-plugin anthropic-agent-skills`
+> После установки выйди из Claude Code и зайди снова.
+
+### 7. Финальный чек-лист
+
+Покажи таблицу с результатами проверки всех компонентов. Напомни про Expo Go на iPhone.
+
+---
+
+## Команда "расскажи про продукт" / "что за проект"
+
+Прочитай `docs/GUTBRAIN_PRODUCT_SPEC.md` и расскажи коротко:
+- Что за приложение
+- Для кого
+- Основные функции
+- План работ
+
+---
+
+## Команда "запусти приложение" / "run"
+
+```bash
+cd app && npx expo start
+```
+
+Скажи: "Отсканируй QR-код камерой iPhone (нужно приложение Expo Go)"
 
 ---
 
